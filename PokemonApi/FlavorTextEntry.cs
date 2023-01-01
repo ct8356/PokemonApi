@@ -1,6 +1,6 @@
 namespace PokemonApi
 {
-    public class FlavourTextEntry
+    public class FlavorTextEntry
     {
         public string? flavor_text { get; set; }
 

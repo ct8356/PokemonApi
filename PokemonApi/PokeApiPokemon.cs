@@ -4,6 +4,6 @@ namespace PokemonApi
     {
         public string? Name { get; set; }
 
-        public FlavourTextEntry[]? flavor_text_entries { get; set; }
+        public FlavorTextEntry[]? flavor_text_entries { get; set; }
     }
 }
