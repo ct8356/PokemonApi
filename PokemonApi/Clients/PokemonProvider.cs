@@ -7,16 +7,15 @@ namespace PokemonApi
         PokeApiPokemon Get(string name);
     }
 
-    internal class PokemonProvider
+    internal class PokemonProvider : IPokemonProvider
     {
-        internal PokeApiPokemon Get(string name)
+        public PokeApiPokemon Get(string name)
         {
             using var client = new HttpClient();
-            client.BaseAddress = new Uri(
-                $"https://pokeapi.co");
+            client.BaseAddress = new Uri("https://pokeapi.co/");
             client.DefaultRequestHeaders.Accept.Add(
                new MediaTypeWithQualityHeaderValue("application/json"));
-            var response = client.GetAsync($"/api/v2/pokemon-species/{name}").Result;
+            var response = client.GetAsync($"api/v2/pokemon-species/{name}").Result;
             if (response.IsSuccessStatusCode)
             {
                 return response.Content.ReadAsAsync<PokeApiPokemon>().Result;

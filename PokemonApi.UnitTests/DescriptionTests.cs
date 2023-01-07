@@ -8,6 +8,9 @@ namespace PokemonApi.UnitTests
 {
     public class DescriptionTests
     {
+        private readonly Mock<IPokemonProvider> _pokemonProvider = new();
+        private readonly Mock<ITranslator> _translator = new();
+
         [Test]
         public void GetPokemon_WithMultipleEnglishFlavors_ReturnsFirstEnglishFlavor()
         {
@@ -29,16 +32,17 @@ namespace PokemonApi.UnitTests
                     }
                 }
             };
-            var pokemonProvider = new Mock<IPokemonProvider>();
-            pokemonProvider.Setup(x => x.Get(name)).Returns(pokemon);
+            
+            _pokemonProvider.Setup(x => x.Get(name)).Returns(pokemon);
+            _translator.Setup(x => x.Translate("description 1")).Returns("translated description 1");
 
             var controller = new PokemonController(
                 new Mock<ILogger<PokemonController>>().Object,
-                pokemonProvider.Object);
+                _pokemonProvider.Object, _translator.Object);
 
-            var result = controller.Get(name);
+            var result = controller.GetPokemon(name);
 
-            result.Description.Should().Be("description 1");
+            result.Description.Should().Be("translated description 1");
         }
     }
 }
