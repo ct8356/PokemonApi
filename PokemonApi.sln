@@ -5,7 +5,12 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonApi", "PokemonApi\PokemonApi.csproj", "{5AC716FD-7B2C-40E5-8A14-393487DEB5D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonApi.UnitTests", "PokemonApi.UnitTests\PokemonApi.UnitTests.csproj", "{41388166-D961-421D-ACE8-EC637FB87505}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonApi.UnitTests", "PokemonApi.UnitTests\PokemonApi.UnitTests.csproj", "{41388166-D961-421D-ACE8-EC637FB87505}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{76CFF199-D77C-4694-AD4E-8086244C784C}"
+	ProjectSection(SolutionItems) = preProject
+		readme.txt = readme.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
