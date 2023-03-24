@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Web;
 
 namespace PokemonApi
 {
@@ -16,14 +17,12 @@ namespace PokemonApi
             client.DefaultRequestHeaders.Accept.Add(
                new MediaTypeWithQualityHeaderValue("application/json"));
             input = RemoveInvalidSubStrings(input);
-            var queryString = Uri.EscapeDataString(input); 
-            //NOTE I think plus works fine,
-            //it was POST that was breaking it!
+            var queryString = HttpUtility.UrlEncode(input); 
             var response = client.GetAsync($"translate/shakespeare.json?text={queryString}")
                 .Result;
             if (response.IsSuccessStatusCode)
             {
-                return response.Content.ReadAsAsync<string>().Result;
+                return response.Content.ReadAsAsync<Translation>().Result.Contents?.Translated ?? input;
             }
             return input;
         }
