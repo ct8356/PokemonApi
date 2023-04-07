@@ -5,21 +5,20 @@ namespace PokemonApi
 {
     public interface ITranslator
     {
-        string Translate(string input);
+        Task<string> Translate(string input);
     }
 
     internal class Translator : ITranslator
     {
-        public string Translate(string input)
+        public async Task<string> Translate(string input)
         {
             using var client = new HttpClient();
             client.BaseAddress = new Uri("https://api.funtranslations.com/");
             client.DefaultRequestHeaders.Accept.Add(
                new MediaTypeWithQualityHeaderValue("application/json"));
             input = RemoveInvalidSubStrings(input);
-            var queryString = HttpUtility.UrlEncode(input); 
-            var response = client.GetAsync($"translate/shakespeare.json?text={queryString}")
-                .Result;
+            var queryString = HttpUtility.UrlEncode(input);
+            var response = await client.GetAsync($"translate/shakespeare.json?text={queryString}");
             if (response.IsSuccessStatusCode)
             {
                 return response.Content.ReadAsAsync<Translation>().Result.Contents?.Translated ?? input;

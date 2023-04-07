@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using PokemonApi.Controllers;
+using System.Threading.Tasks;
 
 namespace PokemonApi.UnitTests
 {
@@ -12,7 +13,7 @@ namespace PokemonApi.UnitTests
         private readonly Mock<ITranslator> _translator = new();
 
         [Test]
-        public void GetPokemon_WithMultipleEnglishFlavors_ReturnsFirstEnglishFlavor()
+        public async Task GetPokemon_WithMultipleEnglishFlavors_ReturnsFirstEnglishFlavor()
         {
             var name = "mewtwo";
             var pokemon = new PokeApiPokemon
@@ -33,14 +34,14 @@ namespace PokemonApi.UnitTests
                 }
             };
             
-            _pokemonProvider.Setup(x => x.Get(name)).Returns(pokemon);
-            _translator.Setup(x => x.Translate("description 1")).Returns("translated description 1");
+            _pokemonProvider.Setup(x => x.Get(name)).ReturnsAsync(pokemon);
+            _translator.Setup(x => x.Translate("description 1")).ReturnsAsync("translated description 1");
 
             var controller = new PokemonController(
                 new Mock<ILogger<PokemonController>>().Object,
                 _pokemonProvider.Object, _translator.Object);
 
-            var result = controller.GetPokemon(name);
+            var result = await controller.GetPokemon(name);
 
             result.Description.Should().Be("translated description 1");
         }

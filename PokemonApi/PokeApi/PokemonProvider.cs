@@ -4,12 +4,12 @@ namespace PokemonApi
 {
     public interface IPokemonProvider
     {
-        PokeApiPokemon Get(string name);
+        Task<PokeApiPokemon> Get(string name);
     }
 
     internal class PokemonProvider : IPokemonProvider
     {
-        public PokeApiPokemon Get(string name)
+        public async Task<PokeApiPokemon> Get(string name)
         {
             using var client = new HttpClient();
             client.BaseAddress = new Uri("https://pokeapi.co/");
@@ -18,7 +18,7 @@ namespace PokemonApi
             var response = client.GetAsync($"api/v2/pokemon-species/{name}").Result;
             if (response.IsSuccessStatusCode)
             {
-                return response.Content.ReadAsAsync<PokeApiPokemon>().Result;
+                return await response.Content.ReadAsAsync<PokeApiPokemon>();
             }
             return new PokeApiPokemon();
         }
