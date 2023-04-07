@@ -20,7 +20,8 @@ namespace PokemonApi
             {
                 return await response.Content.ReadAsAsync<PokeApiPokemon>();
             }
-            return new PokeApiPokemon();
+            var error = await response.Content.ReadAsStringAsync();
+            throw new InvalidOperationException("Call to pokeapi was not successful. It returned the message: " + error);
         }
     }
 }

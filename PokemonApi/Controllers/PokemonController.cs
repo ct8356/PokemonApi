@@ -21,16 +21,23 @@ namespace PokemonApi.Controllers
 
         [HttpGet]
         [Route("{name}")]
-        public async Task<Pokemon> GetPokemon([FromRoute] string name)
+        public async Task<IActionResult> GetPokemon([FromRoute] string name)
         {
-            var result = await _pokemonProvider.Get(name);
-            var description = result.flavor_text_entries?.First(x => x.Language?.name == "en").flavor_text;
-            var newDescription = await _translator.Translate(description ?? string.Empty);
-            return new Pokemon
+            try
             {
-                Name = result.Name,
-                Description = newDescription,
-            };
+                var result = await _pokemonProvider.Get(name);
+                var description = result.flavor_text_entries?.First(x => x.Language?.name == "en").flavor_text;
+                var newDescription = await _translator.Translate(description ?? string.Empty);
+                return Ok(new Pokemon
+                {
+                    Name = result.Name,
+                    Description = newDescription,
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }
