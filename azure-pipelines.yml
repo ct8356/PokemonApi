@@ -17,15 +17,9 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: DotNetCore publish $(buildConfiguration)
   inputs:
-    command: publish
-    projects: "**/PokemonApi/PokemonApi.csproj"
-    arguments: "--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)"
-    zipAfterPublish: true
-
-- publish: $(Build.ArtifactStagingDirectory)
-  artifact: _DotNetProjects
+    command: 'publish'
+    publishWebProjects: true
 
 - task: AzureWebApp@1
   inputs:
