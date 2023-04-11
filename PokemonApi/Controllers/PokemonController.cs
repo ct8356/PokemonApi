@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace PokemonApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]  
+    [Route("[controller]")]
     public class PokemonController : ControllerBase
     {
         private readonly ILogger<PokemonController> _logger;

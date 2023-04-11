@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -41,9 +42,9 @@ namespace PokemonApi.UnitTests
                 new Mock<ILogger<PokemonController>>().Object,
                 _pokemonProvider.Object, _translator.Object);
 
-            var result = await controller.GetPokemon(name);
+            var result = await controller.GetPokemon(name) as OkObjectResult;
 
-            result.Description.Should().Be("translated description 1");
+            (result.Value as Pokemon).Description.Should().Be("translated description 1");
         }
     }
 }
