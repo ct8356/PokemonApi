@@ -16,7 +16,17 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
-# ASP.NET Core
+- task: DotNetCoreCLI@2
+  displayName: DotNetCore publish $(buildConfiguration)
+  inputs:
+    command: publish
+    projects: "**/PokemonApi/PokemonApi.csproj"
+    arguments: "--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)"
+    zipAfterPublish: true
+
+- publish: $(Build.ArtifactStagingDirectory)
+  artifact: _DotNetProjects
+
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'FreeSubscription'
