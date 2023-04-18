@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pokemonapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pokemonapi
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: pokemonapi
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: pokemonapi
+        image: cjtober.azurecr.io/pokemonapi
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pokemonapi
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: pokemonapi
+
